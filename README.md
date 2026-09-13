@@ -7,9 +7,7 @@
 
 # Number Neural Network
 
-A handwritten digit recognizer built from scratch in Python using the MNIST dataset.
-
-The project implements forward propagation, backpropagation, training, and evaluation without machine learning frameworks (no TensorFlow, PyTorch, etc.). A PyQt6 GUI is included for interactive drawing and prediction.
+A neural network that can recognize handwritten digits. It is built from scratch without any machine learning frameworks (no TensorFlow, PyTorch, etc.) and trained using the [<b>MNIST dataset</b>](https://en.wikipedia.org/wiki/MNIST_database). A PyQt6 GUI is included for interactive drawing and training.
 
 <p align="center">
     <img src="docs/images/network_image.png" width="900" alt="Network diagram">
@@ -20,13 +18,12 @@ The project implements forward propagation, backpropagation, training, and evalu
 
 - [Overview](#overview)
 - [Features](#features)
+- [Results](#results)
 - [GUI](#gui)
 - [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Testing](#testing)
 - [Usage](#usage)
+- [Testing](#testing)
 - [Docker](#docker)
-- [Results](#results)
 - [Mathematics](#mathematics)
 - [Acknowledgments](#acknowledgments)
 - [License](#license)
@@ -34,23 +31,35 @@ The project implements forward propagation, backpropagation, training, and evalu
 
 ## Overview
 
-This repository demonstrates a compact, educational neural network for digit classification:
+This educational project demonstrates a neural network that has the following architecture:
 
-- Input: MNIST grayscale images (28 x 28 pixels, represented by 784 input neurons)
-- Architecture: 784 -> 16 -> 16 -> 10
-- Activation: sigmoid
-- Loss: squared error
-- Training: self-implemented custom gradient-based backpropagation
+- Input: <b>MNIST</b> grayscale images (28 x 28 pixels, represented by 784 input neurons)
+- Neurons: 784 -> 16 -> 16 -> 10
+- Activation function: Sigmoid
+- Cost function: Squared error
+- Training: Self-implemented gradient-based backpropagation
 
 
 ## Features
 
 - Implementation in plain Python and NumPy
-- Automatic MNIST data download when required
-- GUI based training workflow backed by reusable training logic
-- Training and evaluation scripts
-- Interactive PyQt6 app with possibilities to draw digits and view output probabilities, and training a fresh model
-- Saved model weights and biases for a pre-trained state
+- Automatic <b>MNIST</b> data download if required (training + test data)
+- Training, evaluation and testing (CI) scripts
+- Interactive PyQt6 GUI with possibilities to:
+    - Draw digits on a 28 x 28 pixel canvas
+    - Evaluate them (probability distribution)
+    - Use a pretrained model or train a fresh model yourself
+    - Self-trainable model stored locally in `data/`
+- Buildable/ downloadable Docker image included
+
+
+## Results
+
+The included pre-trained model reaches approximately 94.84% accuracy after 281 training cycles (about 60 hours total training time).
+
+<p align="center">
+    <img src="docs/images/cost_plot_trained.svg" width="550" alt="Training cost curve">
+</p>
 
 
 ## GUI
@@ -62,34 +71,37 @@ This repository demonstrates a compact, educational neural network for digit cla
 
 ## Project Structure
 
-```text
-src/neuralnetwork/
-|- training.py      # Network setup + training with backpropagation on MNIST training data (used by GUI)
-|- evaluation.py    # Accuracy and cost evaluation on MNIST test data
-|- gui.py           # GUI application: drawing, prediction, and training controls
-|- paths.py         # Centralized path definitions
 ```
-
-
-## Getting Started
-
-### Prerequisites
-
-- Python 3.x
-- pip
-
-### Installation
-
-From the project root:
-
-```bash
-pip install -r requirements.txt
+number-neuralnetwork/
+├─ .github/workflows        # CI file
+├─ requirements.txt         # Program dependencies
+├─ setup.py                 #
+├─ DOCKERFILE               # Buildable Docker image
+├─ docs/                    # README images
+├─ data/
+│  ├─ MNIST/                # MNIST dataset
+│  └─ models/               # Pre- and self-trained model
+├─ tests/
+│  └─ test_training.py      # Automated function test coverage
+└─ src/neuralnetwork/
+   ├─ assets/               # GUI images and data, icons, qss file?????
+   ├─ __init__.py           # 
+   ├─ paths.py              # Centralized path definitions
+   ├─ training.py           # Network and data setup + training
+   ├─ evaluation.py         # Accuracy and cost evaluation
+   └─ gui.py                # Interactive PyQt6 GUI: Draw, train
 ```
 
 
 ## Usage
 
-Run all commands from the repository root.
+Run all following commands from the repository root.
+
+### Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
 
 ### Launch GUI
 
@@ -97,22 +109,13 @@ Run all commands from the repository root.
 python src/neuralnetwork/gui.py
 ```
 
-Draw a digit on the canvas and the model will output predicted probabilities for the digits 0-9. Train a fresh model and see its prediction improvements.
-
 ### Train a Model
 
 ```bash
 python src/neuralnetwork/training.py
 ```
 
-Training can also happen inside the GUI application, where `training.py` acts as the backend engine.
-
-
-Notes:
-
-- If MNIST is missing, it is downloaded automatically.
-- Training from scratch is computationally expensive and can take many hours depending on hardware.
-- In the GUI the models are trained by <b>MNIST</b> test data, in `training.py` by <b>MNIST</b> training data which is 6 times bigger. Therefore GUI is significantly faster. 
+`training.py` also acts as the backend engine of GUI.
 
 ### Evaluate a Trained Model
 
@@ -120,31 +123,34 @@ Notes:
 python src/neuralnetwork/evaluation.py
 ```
 
-This reports average cost, total misclassifications, and accuracy on the <b>MNIST</b> test data. On top a random sample is shown more in detail.
+The evaluation script shows average cost, total misclassifications, accuracy and a random samples' probability distribution.
+
+Notes:
+
+- Training a fresh network is computationally expensive and can take many hours depending on hardware.
+- In `gui.py` the self-trainable model is trained by <b>MNIST</b> test data, whereas in `training.py` by the training data, which is 6 times bigger. This makes GUI is significantly faster.
 
 
 ## Testing
 
-Install test dependency:
+The mathematical functions of the training algorithm are covered by automated tests in `test_training.py`. It is executed in the CI pipeline on every push.
 
-```bash
-pip install pytest
-```
-
-Run tests:
+To run the tests manually (from root):
 
 ```bash
 pytest
 ```
 
+Make sure `pytest` is installed via `pip install pytest`.
+
 
 ## Docker
 
-A Dockerfile is included to provide a reproducible runtime environment with all required dependencies and project data.
+For the GUI, a Dockerfile is included to provide a reproducible runtime environment with all required dependencies and relevant data.
 
 ### Build the image
 
-From the repository root, build the Docker image with:
+From the repository root, build the Docker image by:
 
 ```bash
 docker build -t number-neuralnetwork .
@@ -160,9 +166,7 @@ docker pull luniphys/number-neuralnetwork
 
 ### Run the container
 
-This project uses a PyQt6 GUI, so the container needs access to the host display.
-
-The following commands were tested on **Linux Mint**. First allow Docker to access the display by:
+The container needs access to the host display. To do so run:
 
 ```bash
 xhost +local:docker
@@ -185,41 +189,32 @@ xhost -local:docker
 
 ### Notes
 
-- Running GUI applications in Docker may require different display configuration for other Linux distributions or desktop sessions. The above should work for **Mint** and other **Ubuntu**-based distributions.
-
-
-## Results
-
-The included pre-trained model, reaches approximately 94.84% accuracy after 281 training cycles (about 60 hours total training time).
-
-<p align="center">
-    <img src="docs/images/cost_plot_trained.svg" width="550" alt="Training cost curve">
-</p>
+- The commands were tested and executed on **Linux Mint**. Other distributions may require different display configurations. The above should work for most **Ubuntu**-based distributions though.
 
 
 ## Mathematics
 
-The network computes each layer activation as:
+The network computes each layer activation by:
 
 $$
 a^{(n)} = \sigma \left( W^{(n)} a^{(n-1)} + b^{(n)} \right), \quad n = 1,2,3
 $$
 
-with sigmoid activation:
+$\sigma$ represents the sigmoid activation function:
 
 $$
 \sigma(x) = \frac{1}{1 + e^{-x}}
 $$
 
-The objective is to minimize the squared error:
+The objective is to minimize the squared error cost function:
 
 $$
 C = \sum_{k=1}^{n_3} \left(a_k^{(3)} - y_k\right)^2
 $$
 
-where $y$ is the one-hot encoded target vector for the true digit.
+where $y$ is the encoded target vector for the true digit.
 
-To minimize $C$, the implementation uses the following gradients (with $\sigma$ as sigmoid):
+To minimize $C$, the network uses the following gradient:
 
 $$
 \frac{\partial C}{\partial w_{ij}^{(3)}} = 2 \left(a_i^{(3)} - y_i \right) \cdot \sigma^{\prime} \left(z_i^{(3)} \right) \cdot a_j^{(2)}
@@ -248,7 +243,7 @@ $$
 
 ## Acknowledgments
 
-The mathematical intuition and learning approach are inspired by the excellent 3Blue1Brown neural network series:
+The project approach and mathematical inspiration came from the neural network series by the fabulous <b>3Blue1Brown</b>.
 
 https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi
 
