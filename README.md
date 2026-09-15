@@ -73,23 +73,25 @@ The included pre-trained model reaches approximately 94.84% accuracy after 281 t
 
 ```
 number-neuralnetwork/
-├─ .github/workflows        # CI file
-├─ requirements.txt         # Program dependencies
-├─ setup.py                 #
-├─ DOCKERFILE               # Buildable Docker image
-├─ docs/                    # README images
+├─ .github/workflows/ci.yml     # CI workflow
 ├─ data/
-│  ├─ MNIST/                # MNIST dataset
-│  └─ models/               # Pre- and self-trained model
+│  ├─ MNIST/                    # MNIST dataset
+│  └─ models/                   # Pre- and self-trained model
+├─ docs/images                  # Documentation images
+├─ src/neuralnetwork/
+│  ├─ __init__.py
+│  ├─ paths.py                  # Centralized path definitions
+│  ├─ training.py               # Network and data setup + training
+│  ├─ evaluation.py             # Accuracy and cost evaluation
+│  ├─ gui.py                    # Interactive PyQt6 GUI: Draw, train
+│  └─ assets/                   # GUI images and data, icons, styling
 ├─ tests/
-│  └─ test_training.py      # Automated function test coverage
-└─ src/neuralnetwork/
-   ├─ assets/               # GUI images and data, icons, qss file?????
-   ├─ __init__.py           # 
-   ├─ paths.py              # Centralized path definitions
-   ├─ training.py           # Network and data setup + training
-   ├─ evaluation.py         # Accuracy and cost evaluation
-   └─ gui.py                # Interactive PyQt6 GUI: Draw, train
+│  └─ test_training.py          # Automated tests
+├─ DOCKERFILE                   # Buildable Docker image
+├─ LICENSE
+├─ README.md
+├─ requirements.txt             # Program dependencies
+└─ setup.py
 ```
 
 
