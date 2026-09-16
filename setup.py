@@ -4,7 +4,7 @@ from setuptools import setup, find_packages # type: ignore[import]
 BASE_DIR = Path(__file__).resolve().parent
 
 setup(
-    author="luniphys",
+    author="luniphy",
     name="number-neuralnetwork",
     version="1.0.0",
     description="A simple neural network to recognize handwritten digits.",
