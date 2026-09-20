@@ -1,7 +1,9 @@
 [![CI](https://github.com/luniphy/number-neuralnetwork/actions/workflows/ci.yml/badge.svg)](https://github.com/luniphy/number-neuralnetwork/actions/workflows/ci.yml)
+[![CD](https://github.com/luniphy/number-neuralnetwork/actions/workflows/cd.yml/badge.svg)](https://github.com/luniphy/number-neuralnetwork/actions/workflows/cd.yml)
 [![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff)](https://www.python.org/)
 [![Qt](https://img.shields.io/badge/PyQt-2CDE85?logo=Qt&logoColor=fff)](https://www.qt.io/)
-[![Docker](https://img.shields.io/badge/Docker-%230db7ed.svg?&logo=docker&logoColor=white)](https://hub.docker.com/r/luniphys/number-neuralnetwork)
+[![Docker](https://img.shields.io/badge/Docker-%230db7ed.svg?&logo=docker&logoColor=white)](https://hub.docker.com/r/luniphy/number-neuralnetwork)
+[![GHCR](https://img.shields.io/badge/GHCR-181717?logo=github)](https://github.com/luniphy/number-neuralnetwork/pkgs/container/number-neuralnetwork)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 # Number Neural Network
@@ -47,6 +49,8 @@ This project demonstrates a neural network with the following architecture:
   - Use a pretrained model or train your own model
   - Self-trained model stored locally in `data/`
 - Buildable/ Downloadable Docker image included
+- **CI/CD**: Automated code test and lint checks, followed by vulnerability scanning and image pushes to Docker Hub / GHCR on success
+
 
 ## Results
 
@@ -148,12 +152,18 @@ From the repository root, build the Docker image by:
 docker build -t number-neuralnetwork .
 ```
 
-### Pull from Docker Hub
+### Pull from Docker Hub / GHCR
 
-A prebuilt image is also available on [Docker Hub](https://hub.docker.com/r/luniphys/number-neuralnetwork):
+Prebuilt images are also available on [Docker Hub](https://hub.docker.com/r/luniphy/number-neuralnetwork):
 
 ```bash
-docker pull luniphys/number-neuralnetwork
+docker pull luniphy/number-neuralnetwork:latest
+```
+
+And on the [GitHub Container Registry](https://github.com/luniphy/number-neuralnetwork/pkgs/container/number-neuralnetwork):
+
+```bash
+docker pull ghcr.io/luniphy/number-neuralnetwork:latest
 ```
 
 ### Run the container
@@ -181,6 +191,7 @@ xhost -local:docker
 
 ### Notes
 
+- To run pulled images, use `luniphy/number-neuralnetwork` or `ghcr.io/luniphy/number-neuralnetwork` respectively.
 - The commands were tested and executed on **Linux Mint**. Other distributions may require different display configurations. The above should work for most **Ubuntu**-based distributions though.
 
 ## Mathematics

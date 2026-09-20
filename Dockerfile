@@ -3,6 +3,9 @@ FROM python:3.12-slim
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
+    # To avoid hash mismatch
+    -o Acquire::http::Pipeline-Depth=0 \
+    -o Acquire::Retries=5 \
     libglib2.0-0 \
     libx11-6 \
     libxext6 \

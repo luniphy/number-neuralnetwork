@@ -8,4 +8,5 @@ src/neuralnetwork/assets/cost_plot.svg
 data/models/trained/test
 data/models/current
 tests/__pycache__
+.github/workflows/dockerhub_token.txt
 .pytest_cache/
