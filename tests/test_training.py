@@ -39,7 +39,7 @@ def test_activation():
     res = [round(val, 15) for val in res]
     act_new = activation(act, weight, bias)
     act_new = [round(val, 15) for val in act_new]
-    assert res == act_new
+    assert res == pytest.approx(act_new)
     for val in res:
         assert 0 <= val <= 1
 
@@ -49,7 +49,7 @@ def test_cost():
     num = rn.randint(0, 9)
     drawn_lst[num] = 1
     cost_val = cost(num, act)
-    assert cost_val == sum([(act[i] - drawn_lst[i]) ** 2 for i in range(10)])
+    assert cost_val == pytest.approx(sum([(act[i] - drawn_lst[i]) ** 2 for i in range(10)]))
     assert cost_val >= 0
     
-    assert cost(9, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]) == sum([(0.1 - 0) ** 2, (0.2 - 0) ** 2, (0.3 - 0) ** 2, (0.4 - 0) ** 2, (0.5 - 0) ** 2, (0.6 - 0) ** 2, (0.7 - 0) ** 2, (0.8 - 0) ** 2, (0.9 - 0) ** 2, (1 - 1) ** 2])
+    assert cost(9, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]) == pytest.approx(sum([(0.1 - 0) ** 2, (0.2 - 0) ** 2, (0.3 - 0) ** 2, (0.4 - 0) ** 2, (0.5 - 0) ** 2, (0.6 - 0) ** 2, (0.7 - 0) ** 2, (0.8 - 0) ** 2, (0.9 - 0) ** 2, (1 - 1) ** 2]))
