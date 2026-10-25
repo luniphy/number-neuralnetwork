@@ -70,7 +70,9 @@ The included pre-trained model reaches about 94.84% accuracy after 281 training 
 
 ```
 number-neuralnetwork/
-├─ .github/workflows/ci.yml     # CI workflow
+├─ .github/workflows/
+│  ├─ ci.yml                    # CI workflow
+│  └─ cd.yml                    # CD workflow
 ├─ data/
 │  ├─ MNIST/                    # MNIST test & training data
 │  └─ models/                   # Pre- and self-trained models
