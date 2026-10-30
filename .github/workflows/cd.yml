@@ -43,7 +43,7 @@ jobs:
       - name: Scan image for vulnerabilities
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/number-neuralnetwork:latest
+          image-ref: number-neuralnetwork:scan
           format: table
           exit-code: '0'
           severity: HIGH,CRITICAL
